@@ -52,5 +52,4 @@ scoreTicTacToe :: ScoringFunction
 scoreTicTacToe g1 g2 = play
                          (genomeToFunctionThatTakesABoardAndReturnsAMove g1)
                          (genomeToFunctionThatTakesABoardAndReturnsAMove g2)
-                         --eta reduction ftw
 
