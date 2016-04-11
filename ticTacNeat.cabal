@@ -11,25 +11,16 @@ category:            Development
 build-type:          Simple
 cabal-version:       >=1.10
 
-library
-  hs-source-dirs:      src
-  exposed-modules:     Lib
-  build-depends:       base >= 4.7 && < 5
-                     , containers
-                     , lens
-  default-language:    Haskell2010
-  ghc-options:         -Wall
-
-executable ticTacNeat-app
+executable ticTacNeat
   hs-source-dirs:      app
   main-is:             Main.hs
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base
-                     , ticTacNeat
-                     , neet
+                     , containers
                      , lens
-                     , random-shuffle
                      , MonadRandom
+                     , neet
+                     , random-shuffle
   default-language:    Haskell2010
   ghc-options:         -Wall
 
@@ -37,8 +28,9 @@ test-suite ticTacNeat-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
+  other-modules:       TicTacToe
+                     , FightTrainMethod
   build-depends:       base
-                     , ticTacNeat
                      , hspec
                      , QuickCheck
   ghc-options:         -threaded -rtsopts -with-rtsopts=-N
