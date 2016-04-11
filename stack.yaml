@@ -1,0 +1,10 @@
+flags: {}
+extra-package-dbs: []
+packages:
+- '.'
+extra-deps:
+- base-orphans-0.5.4
+- cereal-0.4.1.1
+- neet-0.4.0.1
+- text-1.2.2.1
+resolver: lts-5.12
