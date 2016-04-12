@@ -2,7 +2,7 @@
 
 module TicTacToe where
 
-import           Data.List   (maximumBy)
+import           Data.List   (maximumBy, intersperse)
 import           Data.Map    (Map, empty, insert, lookup)
 import           Data.Maybe  (isJust)
 import           Data.Monoid (First (..), getFirst, (<>))
@@ -52,8 +52,8 @@ play = play' X empty
                                   O -> move O (p2 board) board
         scores = case moveResult of Nothing -> failed turn
                                     Just b -> play' (opponent turn) b p1 p2
-        failed X = (-2,0)
-        failed O = (0,-2)
+        failed X = (-5,0)
+        failed O = (0,-5)
 
 scoreTicTacToe :: ScoringFunction
 scoreTicTacToe g1 g2 = play (abstractGenome g1 X) (abstractGenome g2 O)
@@ -67,3 +67,26 @@ abstractGenome g p board = maximumBy (comparing (outputs !!)) [0..8]
                 Just p' -> if p' == p then 1 else -1)
     outputs = getOutput (snapshot net inputs)
 
+showBoard :: Board -> String
+showBoard b = (concat . intersperse "\n")
+            $ fmap (concat . intersperse "|")
+            $ (fmap (fmap (showCell . (flip lookup b))))
+            $ cells
+  where
+    cells = [[0,1,2],[3,4,5],[6,7,8]]
+    showCell Nothing = " "
+    showCell (Just X) = "X"
+    showCell (Just O) = "O"
+
+interactivePlay :: (Player -> Board -> BoardPos) -> IO ()
+interactivePlay f = do
+  let loop b = do
+                 let nnMove = f X b
+                 let b' = insert nnMove X b
+                 putStrLn ("NN moved: " ++ show nnMove)
+                 putStrLn $ showBoard b'
+                 print "Your move >"
+                 playerMove <- read <$> getLine
+                 let b'' = insert playerMove O b'
+                 loop b''
+  loop empty
