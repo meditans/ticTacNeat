@@ -2,8 +2,8 @@
 
 module TicTacToe where
 
-import           Data.List   (maximumBy, sortBy)
-import           Data.Map    (Map, empty, insert, lookup, toList)
+import           Data.List   (maximumBy)
+import           Data.Map    (Map, empty, insert, lookup)
 import           Data.Maybe  (isJust)
 import           Data.Monoid (First (..), getFirst, (<>))
 import           Data.Ord    (comparing)
@@ -62,6 +62,8 @@ abstractGenome :: Genome -> (Player -> Board -> BoardPos)
 abstractGenome g p board = maximumBy (comparing (outputs !!)) [0..8]
   where
     net     = mkPhenotype g
-    inputs  = map (\x -> if snd x == p then 1 else -1) . sortBy (comparing fst) $ toList board
+    inputs  = flip map [0..8] (\i -> case lookup i board of
+                Nothing -> 0
+                Just p' -> if p' == p then 1 else -1)
     outputs = getOutput (snapshot net inputs)
 
