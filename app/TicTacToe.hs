@@ -68,7 +68,7 @@ abstractGenome g p board = maximumBy (comparing (outputs !!)) [0..8]
     inputs  = flip map [0..8] (\i -> case lookup i board of
                 Nothing -> 0
                 Just p' -> if p' == p then 1 else -1)
-    outputs = getOutput (snapshot net inputs)
+    outputs = pushThrough net inputs
 
 showBoard :: Board -> String
 showBoard b = (concat . intersperse "\n")
