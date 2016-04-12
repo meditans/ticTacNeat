@@ -46,11 +46,11 @@ play = play' X empty
         failed X = (-2,0)
         failed O = (0,-2)
 
-genomeToFunctionThatTakesABoardAndReturnsAMove :: Genome -> (Board -> (Int,Int))
+genomeToFunctionThatTakesABoardAndReturnsAMove :: Player -> Genome -> (Board -> (Int,Int))
 genomeToFunctionThatTakesABoardAndReturnsAMove = undefined --TODO esecuzione della rete neurale
 
 scoreTicTacToe :: ScoringFunction
 scoreTicTacToe g1 g2 = play
-                         (genomeToFunctionThatTakesABoardAndReturnsAMove g1)
-                         (genomeToFunctionThatTakesABoardAndReturnsAMove g2)
+                         (genomeToFunctionThatTakesABoardAndReturnsAMove X g1)
+                         (genomeToFunctionThatTakesABoardAndReturnsAMove O g2)
 
