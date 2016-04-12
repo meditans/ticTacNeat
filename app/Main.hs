@@ -5,24 +5,24 @@
 
 module Main where
 
--- import TicTacToe
+import TicTacToe
 import FightTrainMethod
-
 import Control.Monad.Random
 import Neet
 
 main :: IO ()
 main = do
-  trainedPop <- evalRandIO $ trainN (fightTrainMethod _what 3) 100 ticTacPopulation
+  trainedPop <- evalRandIO $ trainN (fightTrainMethod scoreTicTacToe 3) 1000 ticTacPopulation
   putStrLn "Here's the best player after this training:"
-  renderGenome (popBOrg trainedPop)
+  print $ trainedPop
+  printGenome (popBOrg trainedPop)
 
 ticTacPopulation :: Population
 ticTacPopulation = newPop 100 PS { psSize = 100
                                  , psInputs = 9
                                  , psOutputs = 9
                                  , psParams = defParams
-                                 , sparse = Nothing
+                                 , sparse = Just 5
                                  , psStrategy = Nothing
                                  }
 
