@@ -50,8 +50,11 @@ play = play' X empty
         winner = getWinner board
         moveResult = case turn of X -> move X (p1 board) board
                                   O -> move O (p2 board) board
-        scores = case moveResult of Nothing -> failed turn
-                                    Just b -> play' (opponent turn) b p1 p2
+        --TODO refactor this mess
+        scores = if all isJust $ map (flip lookup board) [0..8] then (0,0) --draw
+                   else scores'
+        scores' = case moveResult of Nothing -> failed turn
+                                     Just b -> play' (opponent turn) b p1 p2
         failed X = (-5,0)
         failed O = (0,-5)
 
