@@ -44,19 +44,19 @@ play :: (Board -> BoardPos) -> (Board -> BoardPos) -> (Double, Double)
 play = play' X empty
   where
     play' turn board p1 p2 = case winner of Nothing -> scores
-                                            Just X -> (1,-1)
-                                            Just O -> (-1,1)
+                                            Just X -> (6,4)
+                                            Just O -> (4,6)
       where
         winner = getWinner board
         moveResult = case turn of X -> move X (p1 board) board
                                   O -> move O (p2 board) board
         --TODO refactor this mess
-        scores = if all isJust $ map (flip lookup board) [0..8] then (0,0) --draw
+        scores = if all isJust $ map (flip lookup board) [0..8] then (5,5) --draw
                    else scores'
         scores' = case moveResult of Nothing -> failed turn
                                      Just b -> play' (opponent turn) b p1 p2
-        failed X = (-5,0)
-        failed O = (0,-5)
+        failed X = (0,5)
+        failed O = (5,0)
 
 scoreTicTacToe :: ScoringFunction
 scoreTicTacToe g1 g2 = play (abstractGenome g1 X) (abstractGenome g2 O)
