@@ -88,7 +88,7 @@ interactivePlay f = do
                  let b' = insert nnMove X b
                  putStrLn ("NN moved: " ++ show nnMove)
                  putStrLn $ showBoard b'
-                 print "Your move >"
+                 putStr "Your move >"
                  playerMove <- read <$> getLine
                  let b'' = insert playerMove O b'
                  loop b''
