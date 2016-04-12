@@ -23,6 +23,8 @@ executable ticTacNeat
                      , MonadRandom
                      , neet
                      , random-shuffle
+                     , bytestring
+                     , cereal
   default-language:    Haskell2010
   ghc-options:         -Wall
 
