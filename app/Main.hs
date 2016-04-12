@@ -7,10 +7,10 @@ module Main where
 
 import           Control.Monad.Random (evalRandIO)
 import qualified Data.ByteString      as BS
-import           Data.Serialize       (encode)
+import           Data.Serialize       (encode, decode)
 import           FightTrainMethod     (fightTrainMethod)
 import           Neet
-import           TicTacToe            (scoreTicTacToe)
+import           TicTacToe            (scoreTicTacToe, abstractGenome, interactivePlay)
 
 main :: IO ()
 main = do
@@ -35,3 +35,10 @@ ticTacPopulation = newPop 100 PS { psSize = 100
 iterateM :: Monad m => Int -> a -> (a -> m a) -> m a
 iterateM 0 a _ = return a
 iterateM n a f = f a >>= (\a' -> iterateM (n-1) a' f)
+
+testGenome :: String -> IO ()
+testGenome file = do
+  bs <- BS.readFile file
+  let (Right g) = decode bs
+  let f = abstractGenome g
+  interactivePlay f
