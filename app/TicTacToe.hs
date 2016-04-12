@@ -12,7 +12,11 @@ import           Prelude     hiding (lookup)
 
 type ScoringFunction = Genome -> Genome -> (Double, Double) --TODO move to main module?
 
-data Player = X | O deriving (Enum, Eq, Show)
+data Player = X | O deriving (Eq, Show)
+
+opponent :: Player -> Player
+opponent X = O
+opponent O = X
 
 type BoardPos = Int
 type Board    = Map BoardPos Player
@@ -47,7 +51,7 @@ play = play' X empty
         moveResult = case turn of X -> move X (p1 board) board
                                   O -> move O (p2 board) board
         scores = case moveResult of Nothing -> failed turn
-                                    Just b -> play' (succ turn) b p1 p2
+                                    Just b -> play' (opponent turn) b p1 p2
         failed X = (-2,0)
         failed O = (0,-2)
 
