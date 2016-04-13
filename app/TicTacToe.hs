@@ -43,15 +43,15 @@ getWinner b = getFirst (r0 <> r1 <> r2 <> c0 <> c1 <> c2 <> d0 <> d1)
                       | otherwise                    = First Nothing
 
 play :: (Board -> BoardPos) -> (Board -> BoardPos) -> (Double, Double)
-play = play' X empty
+play = play' X empty 0
   where
-    play' turn board p1 p2 =
+    play' turn board step p1 p2 =
       case (winner,  draw,  moveResult)
         of (Just X,  _,     _         ) -> (6,4) -- X won
            (Just O,  _,     _         ) -> (4,6) -- O won
            (_,       True,  _         ) -> (5,5) -- draw
-           (_,       _,     Nothing   ) -> if turn == X then (0,5) else (5,0) -- illegal move
-           (_,       _,     Just b    ) -> play' (opponent turn) b p1 p2 -- continue the game
+           (_,       _,     Nothing   ) -> if turn == X then (step/2,5) else (5,step/2) -- illegal move
+           (_,       _,     Just b    ) -> play' (opponent turn) b (step+1) p1 p2 -- continue the game
       where
         winner = getWinner board
         draw = all isJust $ map (`lookup` board) [0..8]
