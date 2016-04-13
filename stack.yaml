@@ -2,10 +2,9 @@ flags: {}
 extra-package-dbs: []
 packages:
 - '.'
+- location:
+    git: git@github.com:raymoo/NEET
+    commit: c86fc78c8c9df6c1dccff5a58403b833bac636eb
 extra-deps:
-- base-orphans-0.5.4
-- cereal-0.4.1.1
-- neet-0.4.0.1
 - optparse-generic-1.1.0
-- text-1.2.2.1
 resolver: lts-5.12
