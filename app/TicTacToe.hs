@@ -12,6 +12,8 @@ import           Prelude     hiding (lookup)
 
 type ScoringFunction = Genome -> Genome -> (Double, Double) --TODO move to main module?
 
+type Strategy = Player -> Board -> BoardPos
+
 data Player = X | O deriving (Eq, Show)
 
 opponent :: Player -> Player
@@ -61,7 +63,7 @@ play = play' X empty
 scoreTicTacToe :: ScoringFunction
 scoreTicTacToe g1 g2 = play (abstractGenome g1 X) (abstractGenome g2 O)
 
-abstractGenome :: Genome -> (Player -> Board -> BoardPos)
+abstractGenome :: Genome -> Strategy
 abstractGenome g p board = maximumBy (comparing (outputs !!)) [0..8]
   where
     net     = mkPhenotype g
@@ -81,7 +83,7 @@ showBoard b = (concat . intersperse "\n")
     showCell (Just X) = "X"
     showCell (Just O) = "O"
 
-interactivePlay :: (Player -> Board -> BoardPos) -> IO ()
+interactivePlay :: Strategy -> IO ()
 interactivePlay f = do
   let loop b = do
                  let nnMove = f X b
