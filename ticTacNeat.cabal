@@ -33,6 +33,7 @@ executable ticTacNeat
                      , random-shuffle
                      , bytestring
                      , cereal
+                     , optparse-generic
   default-language:    Haskell2010
 
 test-suite ticTacNeat-test

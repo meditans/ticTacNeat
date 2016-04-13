@@ -1,20 +1,33 @@
 -- * Descrizione dell'applicazione
 -- Evolviamo un giocatore di tic/tac/toe usando neat
 
+{-# LANGUAGE DataKinds         #-}
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeOperators     #-}
 {-# OPTIONS_GHC -fdefer-typed-holes #-}
 
 module Main where
 
 import           Control.Monad.Random (evalRandIO)
 import qualified Data.ByteString      as BS
-import           Data.Serialize       (encode, decode)
+import           Data.Serialize       (decode, encode)
 import           FightTrainMethod     (fightTrainMethod)
 import           Neet
-import           TicTacToe            (scoreTicTacToe, abstractGenome, interactivePlay)
+import           Options.Generic
+import           TicTacToe            (abstractGenome, interactivePlay,
+                                       scoreTicTacToe)
+
+data Options = Options { nGens :: Maybe Int <?> "Number of generations" }
+               deriving (Generic, Show)
+
+instance ParseRecord Options
 
 main :: IO ()
 main = do
-  trainedPop <- iterateM 1000 ticTacPopulation (\p -> do
+  opts <- getRecord "Train a tic-tac-toe player using the NEAT architecture"
+  let gens = maybe 1000 id (unHelpful $ nGens opts)
+  trainedPop <- iterateM gens ticTacPopulation (\p -> do
     putStrLn $! "Evaluating generation " ++ show (popGen p)
     putStrLn $! "The best score in this generation is " ++ show (popBScore p)
     p' <- evalRandIO $ trainOnce (fightTrainMethod scoreTicTacToe 3) p
