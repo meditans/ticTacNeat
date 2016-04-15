@@ -37,7 +37,7 @@ main = do
 
 ticTacPopulation :: Population
 ticTacPopulation = newPop 100 PS { psSize = 100
-                                 , psInputs = 9
+                                 , psInputs = 27
                                  , psOutputs = 9
                                  , psParams = defParams
                                  , sparse = Just 5

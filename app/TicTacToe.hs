@@ -65,9 +65,9 @@ abstractGenome :: Genome -> Strategy
 abstractGenome g p board = maximumBy (comparing (outputs !!)) [0..8]
   where
     net     = mkPhenotype g
-    inputs  = flip map [0..8] (\i -> case lookup i board of
-                Nothing -> 0
-                Just p' -> if p' == p then 1 else -1)
+    inputs  = flip concatMap [0..8] (\i -> case lookup i board of
+                Nothing -> [1,0,0]
+                Just p' -> if p' == p then [0,1,0] else [0,0,1])
     outputs = pushThrough net inputs
 
 showBoard :: Board -> String
