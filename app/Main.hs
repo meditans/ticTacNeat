@@ -30,8 +30,7 @@ main = do
   trainedPop <- iterateM gens ticTacPopulation (\p -> do
     putStrLn $! "Evaluating generation " ++ show (popGen p)
     putStrLn $! "The best score in this generation is " ++ show (popBScore p)
-    p' <- evalRandIO $ trainOnce (fightTrainMethod scoreTicTacToe 3) p
-    return p')
+    evalRandIO $! trainOnce (fightTrainMethod scoreTicTacToe 3) p)
   putStrLn "Encoding the best genome..."
   BS.writeFile "genome" (encode $ popBOrg trainedPop)
   putStrLn "Done"
